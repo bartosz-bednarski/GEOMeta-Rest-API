@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(
   cors({
-    origin: ["https://geo-meta.vercel.app"],
+    origin: ["https://geo-meta.vercel.app/continents"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
     "Access-Control-Allow-Origin": "*",
@@ -13,4 +13,4 @@ app.use(
 );
 app.use("/api/continents", continentsRoutes);
 
-app.listen("geo-meta-rest-api.vercel.app");
+// app.listen("geo-meta-rest-api.vercel.app");
