@@ -27,6 +27,6 @@ const app = express();
 //   next();
 // });
 app.use(express.json());
-app.use("api/continents", continentsRoutes);
+app.use("/api/continents", continentsRoutes);
 const port = process.env.PORT || 9001;
 app.listen(port, () => console.log(`Listening to port ${port}`));
