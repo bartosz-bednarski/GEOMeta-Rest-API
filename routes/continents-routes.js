@@ -346,26 +346,26 @@ const europe = [
     img: "malta.svg",
   },
 ];
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
   res.json({ message: "Working good" });
 });
 
-router.get("/northAmerica", (req, res, next) => {
+router.get("/northAmerica", async (req, res, next) => {
   res.json({ data: northAmerica });
 });
-router.get("/southAmerica", (req, res, next) => {
+router.get("/southAmerica", async (req, res, next) => {
   res.json({ data: southAmerica });
 });
-router.get("/europe", (req, res, next) => {
+router.get("/europe", async (req, res, next) => {
   res.json({ data: europe });
 });
-router.get("/africa", (req, res, next) => {
+router.get("/africa", async (req, res, next) => {
   res.json({ data: africa });
 });
-router.get("/asia", (req, res, next) => {
+router.get("/asia", async (req, res, next) => {
   res.json({ data: asia });
 });
-router.get("/oceania", (req, res, next) => {
+router.get("/oceania", async (req, res, next) => {
   res.json({ data: oceania });
 });
 

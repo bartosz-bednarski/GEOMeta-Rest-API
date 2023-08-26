@@ -16,10 +16,6 @@
   },
   "author": "Bartosz Bednarski",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bartosz-bednarski/GEOMeta-Rest-API/issues"
-  },
-  "homepage": "https://github.com/bartosz-bednarski/GEOMeta-Rest-API#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
