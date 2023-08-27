@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const continentsRoutes = require("./routes/continents-routes");
+const continentsRoutes = require("./api/continents-routes");
 // const cors = require("cors");
 const app = express();
 // app.use(function (req, res, next) {
@@ -26,7 +26,7 @@ const app = express();
 //   // Pass to next layer of middleware
 //   next();
 // });
-app.use(express.json());
+const PORT = process.env.PORT || 9001;
 app.use("/api/continents", continentsRoutes);
-const port = process.env.PORT || 9001;
-app.listen(port, () => console.log(`Listening to port ${port}`));
+
+app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
