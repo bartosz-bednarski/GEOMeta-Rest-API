@@ -347,26 +347,60 @@ const europe = [
   },
 ];
 router.get("/", async (req, res, next) => {
-  res.json({ message: "Working good" });
+  try {
+    res.json({ message: "Working good" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Server error");
+  }
 });
-
-router.get("/northAmerica", async (req, res, next) => {
-  res.json({ data: northAmerica });
-});
-router.get("/southAmerica", async (req, res, next) => {
-  res.json({ data: southAmerica });
-});
-router.get("/europe", async (req, res, next) => {
-  res.json({ data: europe });
-});
-router.get("/africa", async (req, res, next) => {
-  res.json({ data: africa });
-});
-router.get("/asia", async (req, res, next) => {
-  res.json({ data: asia });
-});
-router.get("/oceania", async (req, res, next) => {
-  res.json({ data: oceania });
-});
+try {
+  router.get("/northAmerica", async (req, res, next) => {
+    res.json({ data: northAmerica });
+  });
+} catch (error) {
+  console.log(error);
+  return res.status(500).send("Server error");
+}
+try {
+  router.get("/southAmerica", async (req, res, next) => {
+    res.json({ data: southAmerica });
+  });
+} catch (error) {
+  console.log(error);
+  return res.status(500).send("Server error");
+}
+try {
+  router.get("/europe", async (req, res, next) => {
+    res.json({ data: europe });
+  });
+} catch (error) {
+  console.log(error);
+  return res.status(500).send("Server error");
+}
+try {
+  router.get("/africa", async (req, res, next) => {
+    res.json({ data: africa });
+  });
+} catch (error) {
+  console.log(error);
+  return res.status(500).send("Server error");
+}
+try {
+  router.get("/asia", async (req, res, next) => {
+    res.json({ data: asia });
+  });
+} catch (error) {
+  console.log(error);
+  return res.status(500).send("Server error");
+}
+try {
+  router.get("/oceania", async (req, res, next) => {
+    res.json({ data: oceania });
+  });
+} catch (error) {
+  console.log(error);
+  return res.status(500).send("Server error");
+}
 
 module.exports = router;
