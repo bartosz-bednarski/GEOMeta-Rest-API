@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const continentsRoutes = require("./api/continents-routes");
+const continentsRoutes = require("./api/continents");
 // const cors = require("cors");
 const app = express();
 // app.use(function (req, res, next) {
