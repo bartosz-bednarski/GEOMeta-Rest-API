@@ -8,6 +8,6 @@ const config = {
     connectTimeout: 60000,
     port: process.env.DB_PORT,
   },
-  listPerPage: 10,
+  listPerPage: 50,
 };
 module.exports = config;
