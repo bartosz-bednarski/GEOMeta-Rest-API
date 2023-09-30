@@ -1,0 +1,27 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "mysql1",
+      "database": "default",
+      "username": "root",
+      "askForPassword": true
+    },
+    {
+      "previewLimit": 50,
+      "server": "geometa-db.cygcg4ko6wkw.eu-north-1.rds.amazonaws.com",
+      "port": 5432,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "GeoMeta_db",
+      "database": "GeoMeta_db",
+      "username": "ViolentRider"
+    }
+  ]
+}
