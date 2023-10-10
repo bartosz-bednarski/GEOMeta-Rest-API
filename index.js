@@ -3,6 +3,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const continentsRoutes = require("./api/continents");
+const countriesRoutes = require("./api/countries");
 const HttpError = require("./models/http-error");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(
 app.use(cors());
 const PORT = process.env.PORT || 9001;
 app.use("/api/continents", continentsRoutes);
+app.use("/api/countries", countriesRoutes);
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
