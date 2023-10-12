@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const continents = require("../services/continents");
+const continents = require("../controllers/continents-controllers");
 
 router.get("/", async (req, res, next) => {
   try {
