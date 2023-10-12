@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const getCountry = require("../services/countries");
+const getCountry = require("../controllers/countries-controllers");
 router.get("/:country", async (req, res, next) => {
   const country = req.params.country;
   try {
