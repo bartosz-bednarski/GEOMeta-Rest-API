@@ -8,9 +8,5 @@ router.post(
   usersControllers.authenticateToken,
   forumControllers.createTopic
 );
-router.get(
-  "/getTopics",
-  usersControllers.authenticateToken,
-  forumControllers.getTopics
-);
+router.get("/getTopics", forumControllers.getTopics);
 module.exports = router;
