@@ -25,7 +25,9 @@ const registerUser = async (req, res, next) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       await db.query(
-        `INSERT INTO "users" ("username","email","password","icon_background_color") VALUES ('${username}','${email}','${hashedPassword}','${iconBackgroundColor}')`
+        `INSERT INTO "users" ("username","email","password","icon_background_color","username_short") VALUES ('${username}','${email}','${hashedPassword}','${iconBackgroundColor}','${username
+          .slice(0, 2)
+          .toUpperCase()}')`
       );
     } catch (err) {
       const error = new HttpError("Failed to register, check your data!", 500);
@@ -47,7 +49,7 @@ const loginUser = async (req, res, next) => {
   }
   try {
     userDb = await db.query(
-      `select username,password,email,icon_background_color from users where(username='${username}')`
+      `select username,password,email,icon_background_color,username_short from users where(username='${username}')`
     );
     console.log(userDb);
   } catch (err) {
@@ -63,6 +65,7 @@ const loginUser = async (req, res, next) => {
       res.status(201).json({
         body: {
           username: userDb[0].username,
+          usernameShort: userDb[0].username_short,
           email: userDb[0].email,
           iconBackgroundColor: userDb[0].icon_background_color,
           accessToken: accessToken,
