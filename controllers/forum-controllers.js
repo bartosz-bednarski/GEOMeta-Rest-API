@@ -16,15 +16,15 @@ var month = [
   "Lis",
   "Gru",
 ];
-const date = new Date();
+let date = new Date();
 let day = new String(date.getDate());
 day = day.length === 1 ? `0${day}` : day;
 let hours = new String(date.getHours());
 hours = hours.length === 1 ? `0${hours}` : hours;
 let minutes = new String(date.getMinutes());
 minutes = minutes.length === 1 ? `0${minutes}` : minutes;
-const dateExpo = day + " " + month[date.getMonth()] + " " + date.getFullYear();
-const timeExpo = hours + ":" + minutes;
+let dateExpo = day + " " + month[date.getMonth()] + " " + date.getFullYear();
+let timeExpo = hours + ":" + minutes;
 const createTopic = async (req, res, next) => {
   const data = [
     {
@@ -73,11 +73,12 @@ const createComment = async (req, res, next) => {
       {
         comment_id: uuidv1(),
         topic_id: req.body.topic_id,
-        username: "annonymous",
-        usernameShort: "annonymous",
+        username: "Anonymous",
+        usernameShort: "anonymous",
         dateString: dateExpo,
         timeString: timeExpo,
         iconBackgroundColor: "#2baad7",
+        content: req.body.content,
         date: new Date(),
       },
     ];
@@ -92,6 +93,7 @@ const createComment = async (req, res, next) => {
         dateString: dateExpo,
         timeString: timeExpo,
         iconBackgroundColor: req.body.iconBackgroundColor,
+        content: req.body.content,
         date: new Date(),
       },
     ];
@@ -111,4 +113,22 @@ const createComment = async (req, res, next) => {
     return next(new HttpError("Failed to connect with db!"), 500);
   }
 };
-module.exports = { createTopic, getTopics, createComment };
+const getComments = async (req, res, next) => {
+  const topicId = req.params.topicId;
+  try {
+    const client = await mongo.MongoClient.connect(
+      `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.kl5um6i.mongodb.net/?retryWrites=true&w=majority`
+    );
+    const db = client.db("Geometa");
+    const forumCollection = db.collection("Comments");
+    const response = await forumCollection
+      .find({ topic_id: topicId })
+      .toArray();
+    res.status(201).json({ message: "Success", data: response });
+    client.close();
+  } catch (err) {
+    console.log(err);
+    return next(new HttpError("Failed to connect with db!"), 500);
+  }
+};
+module.exports = { createTopic, getTopics, createComment, getComments };
