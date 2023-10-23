@@ -9,4 +9,13 @@ router.post(
   forumControllers.createTopic
 );
 router.get("/getTopics", forumControllers.getTopics);
+router.post(
+  "/:topicId/createComment/authorized",
+  usersControllers.authenticateToken,
+  forumControllers.createComment
+);
+router.post(
+  "/:topicId/createComment/unauthorized",
+  forumControllers.createComment
+);
 module.exports = router;

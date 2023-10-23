@@ -1,5 +1,6 @@
 const HttpError = require("../models/http-error");
 require("dotenv").config();
+const { v1: uuidv1, v4: uuidv4 } = require("uuid");
 const mongo = require("mongodb");
 var month = [
   "Sty",
@@ -20,11 +21,14 @@ let day = new String(date.getDate());
 day = day.length === 1 ? `0${day}` : day;
 let hours = new String(date.getHours());
 hours = hours.length === 1 ? `0${hours}` : hours;
+let minutes = new String(date.getMinutes());
+minutes = minutes.length === 1 ? `0${minutes}` : minutes;
 const dateExpo = day + " " + month[date.getMonth()] + " " + date.getFullYear();
-const timeExpo = hours + ":" + date.getMinutes();
+const timeExpo = hours + ":" + minutes;
 const createTopic = async (req, res, next) => {
   const data = [
     {
+      topic_id: uuidv1(),
       username: req.user.username,
       usernameShort: req.body.usernameShort,
       topic: req.body.topic,
@@ -38,7 +42,7 @@ const createTopic = async (req, res, next) => {
       `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.kl5um6i.mongodb.net/?retryWrites=true&w=majority`
     );
     const db = client.db("Geometa");
-    const forumCollection = db.collection("Forum");
+    const forumCollection = db.collection("Topics");
     const response = await forumCollection.insertMany(data);
     client.close();
     res.status(201).json({ message: "Success" });
@@ -53,7 +57,7 @@ const getTopics = async (req, res, next) => {
       `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.kl5um6i.mongodb.net/?retryWrites=true&w=majority`
     );
     const db = client.db("Geometa");
-    const forumCollection = db.collection("Forum");
+    const forumCollection = db.collection("Topics");
     const response = await forumCollection.find({}).toArray();
     res.status(201).json({ message: "Success", data: response });
     client.close();
@@ -62,5 +66,49 @@ const getTopics = async (req, res, next) => {
     return next(new HttpError("Failed to connect with db!"), 500);
   }
 };
+const createComment = async (req, res, next) => {
+  let data;
+  if (req.user === undefined) {
+    data = [
+      {
+        comment_id: uuidv1(),
+        topic_id: req.body.topic_id,
+        username: "annonymous",
+        usernameShort: "annonymous",
+        dateString: dateExpo,
+        timeString: timeExpo,
+        iconBackgroundColor: "#2baad7",
+        date: new Date(),
+      },
+    ];
+  }
+  if (req.user !== undefined) {
+    data = [
+      {
+        comment_id: uuidv1(),
+        topic_id: req.body.topic_id,
+        username: req.user.username,
+        usernameShort: req.body.usernameShort,
+        dateString: dateExpo,
+        timeString: timeExpo,
+        iconBackgroundColor: req.body.iconBackgroundColor,
+        date: new Date(),
+      },
+    ];
+  }
 
-module.exports = { createTopic, getTopics };
+  try {
+    const client = await mongo.MongoClient.connect(
+      `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.kl5um6i.mongodb.net/?retryWrites=true&w=majority`
+    );
+    const db = client.db("Geometa");
+    const forumCollection = db.collection("Comments");
+    const response = await forumCollection.insertMany(data);
+    client.close();
+    res.status(201).json({ message: "Success" });
+  } catch (err) {
+    console.log(err);
+    return next(new HttpError("Failed to connect with db!"), 500);
+  }
+};
+module.exports = { createTopic, getTopics, createComment };
