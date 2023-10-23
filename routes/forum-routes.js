@@ -18,4 +18,5 @@ router.post(
   "/:topicId/createComment/unauthorized",
   forumControllers.createComment
 );
+router.get("/:topicId/getComments", forumControllers.getComments);
 module.exports = router;
