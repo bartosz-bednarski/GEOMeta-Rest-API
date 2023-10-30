@@ -13,26 +13,22 @@ const getFlags = async (req, res, next) => {
     let response = [];
     for (let i = 0; i <= 16; i += 4) {
       let dataWithId = data.slice(i, i + 4);
-      for (let x = 0; x < 4; x++) {
-        dataWithId[x] = { ...dataWithId[x], id: x };
-      }
+      response.push({ data: dataWithId });
+    }
+    for (let x = 0; x < 5; x++) {
       let answer = Math.round(Math.random() * (3 - 1) + 1);
-      dataWithId = {
-        ...dataWithId,
+      let question = response[x].data[answer].country_name;
+      response[x] = {
+        ...response[x],
+        id: x,
         answer: jwt.sign(answer, process.env.QUIZ_ANSWER_TOKEN_SECRET),
-      };
-
-      let question = dataWithId[answer].country_name;
-      dataWithId = {
-        ...dataWithId,
         question: question,
       };
-
-      for (let x = 0; x < 4; x++) {
-        delete dataWithId[x].country_name;
+      for (let j = 0; j < 4; j++) {
+        delete response[x].data[j].country_name;
       }
-      response.push(dataWithId);
     }
+
     res.status(201).json({ message: "Success", data: response });
   } catch (err) {
     return next(new HttpError("Failed to connect with db!"), 500);
