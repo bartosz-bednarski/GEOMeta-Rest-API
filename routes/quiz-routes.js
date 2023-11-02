@@ -17,4 +17,12 @@ router.post(
   usersControllers.authenticateToken,
   quizControllers.postEmblemsAuth
 );
+
+router.get("/getPlates", quizControllers.getPlates);
+router.post("/postPlates", quizControllers.postPlates);
+router.post(
+  "/postPlates/auth",
+  usersControllers.authenticateToken,
+  quizControllers.postPlatesAuth
+);
 module.exports = router;
