@@ -106,7 +106,7 @@ const postFlagsAuth = async (req, res, next) => {
     const rows = await db.query(
       `update users set flags_quiz_score=(select flags_quiz_score from users where username='${user}')+${
         userScore * 10
-      } where username='${user}'`
+      },flags_quiz_counter=(select flags_quiz_counter from users where username='${user}')+1 where username='${user}'`
     );
     res.status(201).json({
       message: "ok",
@@ -223,7 +223,7 @@ const postEmblemsAuth = async (req, res, next) => {
     const rows = await db.query(
       `update users set emblems_quiz_score=(select emblems_quiz_score from users where username='${user}')+${
         userScore * 10
-      } where username='${user}'`
+      },emblems_quiz_counter=(select emblems_quiz_counter from users where username='${user}')+1 where username='${user}'`
     );
     console.log(rows);
     res.status(201).json({
@@ -342,7 +342,7 @@ const postPlatesAuth = async (req, res, next) => {
     const rows = await db.query(
       `update users set plates_quiz_score=(select plates_quiz_score from users where username='${user}')+${
         userScore * 10
-      } where username='${user}'`
+      },plates_quiz_counter=(select plates_quiz_counter from users where username='${user}')+1 where username='${user}'`
     );
     console.log(rows);
     res.status(201).json({
