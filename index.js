@@ -7,6 +7,7 @@ const countriesRoutes = require("./routes/countries-routes");
 const usersRoutes = require("./routes/users-routes");
 const forumRoutes = require("./routes/forum-routes");
 const quizRoutes = require("./routes/quiz-routes");
+const profileRoutes = require("./routes/profile-routes");
 const HttpError = require("./models/http-error");
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/countries", countriesRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/forum", forumRoutes);
 app.use("/api/quiz", quizRoutes);
+app.use("/api/profile", profileRoutes);
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
