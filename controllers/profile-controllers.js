@@ -5,9 +5,10 @@ const jwt = require("jsonwebtoken");
 
 const getProfile = async (req, res, next) => {
   try {
-    const profileData = await db.query(
+    const data = await db.query(
       `select username_short,flags_quiz_score,emblems_quiz_score,plates_quiz_score,flags_quiz_counter,emblems_quiz_counter,plates_quiz_counter from users where username='${req.user.username}'`
     );
+    const profileData = await data;
     res.status(201).json({
       // body: {
       //   username_short: profileData[0].username_short,
