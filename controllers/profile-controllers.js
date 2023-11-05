@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const getProfile = async (req, res, next) => {
-  const username = req.user;
+  const username = req.user.username;
   let profileData;
   try {
     profileData = await db.query(
