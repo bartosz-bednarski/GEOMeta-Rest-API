@@ -5,8 +5,9 @@ const jwt = require("jsonwebtoken");
 
 const getProfile = async (req, res, next) => {
   try {
+    console.log(req);
     const data = await db.query(
-      `select username_short,flags_quiz_score,emblems_quiz_score,plates_quiz_score,flags_quiz_counter,emblems_quiz_counter,plates_quiz_counter from users where username='${req.user.username}'`
+      `select username_short,flags_quiz_score,emblems_quiz_score,plates_quiz_score,flags_quiz_counter,emblems_quiz_counter,plates_quiz_counter from users where username='${req.user}'`
     );
     const profileData = await data;
     res.status(201).json({
@@ -42,7 +43,7 @@ const changePassword = async (req, res, next) => {
   }
   try {
     const data = await db.query(
-      `select password from users where(username='${req.user.username}')`
+      `select password from users where(username='${req.user}')`
     );
     passwordDb = await data;
   } catch (err) {
@@ -54,12 +55,9 @@ const changePassword = async (req, res, next) => {
     if (await bcrypt.compare(oldPassword, await passwordDb[0].password)) {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       const newPasswordQuery = await db.query(
-        `update users set password='${hashedPassword}' where username='${req.user.username}'`
+        `update users set password='${hashedPassword}' where username='${req.user}'`
       );
-      const accessToken = jwt.sign(
-        req.user.username,
-        process.env.ACCESS_TOKEN_SECRET
-      );
+      const accessToken = jwt.sign(req.user, process.env.ACCESS_TOKEN_SECRET);
       res.status(201).json({
         body: {
           accessToken: accessToken,
@@ -89,7 +87,7 @@ const changeShortname = async (req, res, next) => {
   }
   try {
     await db.query(
-      `update users set username_short='${usernameShort}' where username='${req.user.username}'`
+      `update users set username_short='${usernameShort}' where username='${req.user}'`
     );
     res.status(201).json({
       body: {
