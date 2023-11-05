@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const getProfile = async (req, res, next) => {
-  const username = req.user.username;
+  const username = req.user;
   let profileData;
   try {
     profileData = await db.query(
@@ -75,9 +75,8 @@ const changePassword = async (req, res, next) => {
 };
 
 const changeShortname = async (req, res, next) => {
-  const username = req.user.username;
+  const username = req.user;
   const { usernameShort } = req.body;
-  console.log(username, usernameShort);
   if (usernameShort.length > 2) {
     return next(new HttpError("Shortname too long"), 500);
   }
