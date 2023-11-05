@@ -41,9 +41,10 @@ const changePassword = async (req, res, next) => {
     return next(new HttpError("New passwords are different"), 500);
   }
   try {
-    passwordDb = await db.query(
+    const data = await db.query(
       `select password from users where(username='${req.user.username}')`
     );
+    passwordDb = await data;
   } catch (err) {
     console.log(err);
     const error = new HttpError("Failed to connect with db", 500);
@@ -53,9 +54,12 @@ const changePassword = async (req, res, next) => {
     if (await bcrypt.compare(oldPassword, await passwordDb[0].password)) {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       const newPasswordQuery = await db.query(
-        `update users set password='${hashedPassword}' where username='${username}'`
+        `update users set password='${hashedPassword}' where username='${req.user.username}'`
       );
-      const accessToken = jwt.sign(username, process.env.ACCESS_TOKEN_SECRET);
+      const accessToken = jwt.sign(
+        req.user.username,
+        process.env.ACCESS_TOKEN_SECRET
+      );
       res.status(201).json({
         body: {
           accessToken: accessToken,
