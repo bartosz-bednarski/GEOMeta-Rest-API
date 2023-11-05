@@ -4,28 +4,27 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const getProfile = async (req, res, next) => {
-  let profileData;
   try {
-    profileData = await db.query(
+    const profileData = await db.query(
       `select username_short,flags_quiz_score,emblems_quiz_score,plates_quiz_score,flags_quiz_counter,emblems_quiz_counter,plates_quiz_counter from users where(username='${req.user.username}')`
     );
+    res.status(201).json({
+      body: {
+        username_short: profileData[0].username_short,
+        flags_quiz_score: profileData[0].flags_quiz_score,
+        emblems_quiz_score: profileData[0].emblems_quiz_score,
+        plates_quiz_score: profileData[0].plates_quiz_score,
+        flags_quiz_counter: profileData[0].flags_quiz_counter,
+        emblems_quiz_counter: profileData[0].emblems_quiz_counter,
+        plates_quiz_counter: profileData[0].plates_quiz_counter,
+      },
+      message: "ok",
+    });
   } catch (err) {
     console.log(err);
     const error = new HttpError("Failed to connect with db", 500);
     return next(error);
   }
-  res.status(201).json({
-    body: {
-      username_short: profileData[0].username_short,
-      flags_quiz_score: profileData[0].flags_quiz_score,
-      emblems_quiz_score: profileData[0].emblems_quiz_score,
-      plates_quiz_score: profileData[0].plates_quiz_score,
-      flags_quiz_counter: profileData[0].flags_quiz_counter,
-      emblems_quiz_counter: profileData[0].emblems_quiz_counter,
-      plates_quiz_counter: profileData[0].plates_quiz_counter,
-    },
-    message: "ok",
-  });
 };
 const changePassword = async (req, res, next) => {
   const { oldPassword, newPassword, newPasswordConfirm } = req.body;
