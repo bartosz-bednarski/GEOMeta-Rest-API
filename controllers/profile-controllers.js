@@ -10,17 +10,16 @@ const getProfile = async (req, res, next) => {
     );
     const profileData = await data;
     res.status(201).json({
-      // body: {
-      //   username_short: profileData[0].username_short,
-      //   flags_quiz_score: profileData[0].flags_quiz_score,
-      //   emblems_quiz_score: profileData[0].emblems_quiz_score,
-      //   plates_quiz_score: profileData[0].plates_quiz_score,
-      //   flags_quiz_counter: profileData[0].flags_quiz_counter,
-      //   emblems_quiz_counter: profileData[0].emblems_quiz_counter,
-      //   plates_quiz_counter: profileData[0].plates_quiz_counter,
-      // },
       message: "ok",
-      data: profileData,
+      body: {
+        username_short: profileData[0].username_short,
+        flags_quiz_score: profileData[0].flags_quiz_score,
+        emblems_quiz_score: profileData[0].emblems_quiz_score,
+        plates_quiz_score: profileData[0].plates_quiz_score,
+        flags_quiz_counter: profileData[0].flags_quiz_counter,
+        emblems_quiz_counter: profileData[0].emblems_quiz_counter,
+        plates_quiz_counter: profileData[0].plates_quiz_counter,
+      },
     });
   } catch (err) {
     console.log(err);
