@@ -30,7 +30,7 @@ const getProfile = async (req, res, next) => {
 };
 const changePassword = async (req, res, next) => {
   const { oldPassword, newPassword, newPasswordConfirm } = req.body;
-  const username = req.user;
+  const username = req.user.username;
   let passwordDb;
   if (
     oldPassword.length < 6 ||
@@ -75,7 +75,7 @@ const changePassword = async (req, res, next) => {
 };
 
 const changeShortname = async (req, res, next) => {
-  const username = req.user;
+  const username = req.user.username;
   const { usernameShort } = req.body;
   if (usernameShort.length > 2) {
     return next(new HttpError("Shortname too long"), 500);
