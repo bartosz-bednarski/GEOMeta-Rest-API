@@ -4,11 +4,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const getProfile = async (req, res, next) => {
-  const username = req.user.username;
   let profileData;
   try {
     profileData = await db.query(
-      `select username_short,flags_quiz_score,emblems_quiz_score,plates_quiz_score,flags_quiz_counter,emblems_quiz_counter,plates_quiz_counter from users where(username='${username}')`
+      `select username_short,flags_quiz_score,emblems_quiz_score,plates_quiz_score,flags_quiz_counter,emblems_quiz_counter,plates_quiz_counter from users where(username='${req.user.username}')`
     );
   } catch (err) {
     console.log(err);
@@ -30,7 +29,6 @@ const getProfile = async (req, res, next) => {
 };
 const changePassword = async (req, res, next) => {
   const { oldPassword, newPassword, newPasswordConfirm } = req.body;
-  const username = req.user.username;
   let passwordDb;
   if (
     oldPassword.length < 6 ||
@@ -44,7 +42,7 @@ const changePassword = async (req, res, next) => {
   }
   try {
     passwordDb = await db.query(
-      `select password from users where(username='${username}')`
+      `select password from users where(username='${req.user.username}')`
     );
   } catch (err) {
     console.log(err);
@@ -75,7 +73,6 @@ const changePassword = async (req, res, next) => {
 };
 
 const changeShortname = async (req, res, next) => {
-  const username = req.user.username;
   const { usernameShort } = req.body;
   if (usernameShort.length > 2) {
     return next(new HttpError("Shortname too long"), 500);
@@ -88,7 +85,7 @@ const changeShortname = async (req, res, next) => {
   }
   try {
     await db.query(
-      `update users set username_short='${usernameShort}' where username='${username}'`
+      `update users set username_short='${usernameShort}' where username='${req.user.username}'`
     );
     res.status(201).json({
       body: {
